@@ -20,51 +20,78 @@ const NewBlogPost = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    const content = html;
 
     setFormData({
       ...formData,
       [name]: value,
-      html
+      content,
     });
 
-    console.log(formData)
+    console.log(formData);
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    e.preventDefault()
-
-    formData.readTime = {"value": formData.readTime}
-    formData.author = {"name": formData.author}
+    formData.readTime = { value: parseInt(formData.readTime) };
+    formData.author = { name: formData.author };
 
     try {
       const response = await fetch("http://localhost:5050/posts/create", {
+        headers: {
+          "Content-Type": "application/json",
+        },
         method: "POST",
         body: JSON.stringify(formData),
       });
       return response;
-    } catch (e) {
+    } catch (error) {
       console.log(e);
     }
+
   };
+  
   return (
     <Container>
       <Form className="mt-5" onSubmit={handleSubmit}>
         <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Title</Form.Label>
-          <Form.Control name="title" onChange={handleInputChange} size="lg" placeholder="Title" />
+          <Form.Control
+            name="title"
+            onChange={handleInputChange}
+            size="lg"
+            placeholder="Title"
+          />
         </Form.Group>
         <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Author</Form.Label>
-          <Form.Control name="author" onChange={handleInputChange} size="lg" placeholder="Author" />
+          <Form.Control
+            name="author"
+            onChange={handleInputChange}
+            size="lg"
+            placeholder="Author"
+          />
         </Form.Group>
         <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Readtime</Form.Label>
-          <Form.Control min={1} type="number" name="readTime" onChange={handleInputChange} size="lg" placeholder="Readtime" />
+          <Form.Control
+            min={1}
+            type="number"
+            name="readTime"
+            onChange={handleInputChange}
+            size="lg"
+            placeholder="Readtime"
+          />
         </Form.Group>
         <Form.Group controlId="blog-category" className="mt-3">
           <Form.Label>Category</Form.Label>
-          <Form.Control name="category" onChange={handleInputChange} size="lg" as="select">
+          <Form.Control
+            name="category"
+            onChange={handleInputChange}
+            size="lg"
+            as="select"
+          >
             <option>Category1</option>
             <option>Category2</option>
             <option>Category3</option>
