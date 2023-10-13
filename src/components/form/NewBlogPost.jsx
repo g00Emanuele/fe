@@ -4,28 +4,21 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import axios from 'axios'
 
 const NewBlogPost = () => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-  const [html, setHTML] = useState(null);
-  useEffect(() => {
-    let html = convertToHTML(editorState.getCurrentContent());
-    setHTML(html);
-    //console.log(html);
-  }, [editorState]);
-
+  
   const [formData, setFormData] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const content = html;
 
     setFormData({
       ...formData,
       [name]: value,
-      content,
     });
 
     console.log(formData);
@@ -51,6 +44,17 @@ const NewBlogPost = () => {
     }
 
   };
+
+  useEffect(() => {
+    let content = convertToHTML(editorState.getCurrentContent());
+    // setContent(content);
+    //console.log(html);
+    setFormData({
+      ...formData,
+      content,
+    });
+  }, [editorState]);
+
   
   return (
     <Container>
