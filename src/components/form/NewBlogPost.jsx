@@ -1,15 +1,9 @@
-import { convertToHTML } from "draft-convert";
-import { EditorState } from "draft-js";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import axios from 'axios'
 
+
 const NewBlogPost = () => {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
   
   const [formData, setFormData] = useState({});
 
@@ -28,7 +22,6 @@ const NewBlogPost = () => {
     e.preventDefault();
 
     formData.readTime = { value: parseInt(formData.readTime) };
-    formData.author = { name: formData.author };
 
     try {
       const response = await fetch("http://localhost:5050/posts/create", {
@@ -45,15 +38,8 @@ const NewBlogPost = () => {
 
   };
 
-  useEffect(() => {
-    let content = convertToHTML(editorState.getCurrentContent());
-    // setContent(content);
-    //console.log(html);
-    setFormData({
-      ...formData,
-      content,
-    });
-  }, [editorState]);
+
+
 
   
   return (
@@ -105,12 +91,11 @@ const NewBlogPost = () => {
         </Form.Group>
         <Form.Group controlId="blog-content" className="mt-3">
           <Form.Label>Blog Content</Form.Label>
-          <Editor
-            editorState={editorState}
-            toolbarClassName="toolbarClassName"
-            wrapperClassName="wrapperClassName"
-            editorClassName="editorClassName"
-            onEditorStateChange={setEditorState}
+          <Form.Control
+            name="content"
+            onChange={handleInputChange}
+            size="lg"
+            placeholder="Content"
           />
         </Form.Group>
         <Form.Group className="d-flex mt-3 justify-content-end">

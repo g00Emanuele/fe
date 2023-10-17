@@ -20,6 +20,7 @@ export default function MyBlogSection() {
       );
       setPosts(response.data);
       setLoading(false);
+      console.log(response.data)
     } catch (error) {
       if (error) setError(error);
     }

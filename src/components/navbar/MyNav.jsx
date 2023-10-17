@@ -11,8 +11,8 @@ export default function MyNav() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/new">Add a BlogPost</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
+            <Nav.Link href="/newblog">Add a BlogPost</Nav.Link>
+            <Nav.Link href="/newauthor">Sign in</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
