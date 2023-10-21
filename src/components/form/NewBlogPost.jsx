@@ -1,11 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Container, Form } from "react-bootstrap";
-import axios from 'axios'
-
+import { Button, Container, Form, Modal } from "react-bootstrap";
+import axios from "axios";
 
 const NewBlogPost = () => {
-  
   const [formData, setFormData] = useState({});
+  const [file, setFile] = useState(null);
+  console.log(file);
+
+  const onChangeSetFile = (e) => {
+    setFile(e.target.files[0]); // il file si trova sempre a e.target.files[0]
+  };
+
+  const uploadFile = async (cover) => {
+    const fileData = new FormData();
+    fileData.append("cover", cover);
+
+    try {
+      const response = await fetch("http://localhost:5050/posts/cloudUpload", {
+        method: "POST",
+        body: fileData,
+      });
+      return await response.json();
+    } catch (error) {
+      console.log(error, "Errore in uploadFile");
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,31 +39,39 @@ const NewBlogPost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    formData.readTime = { value: Number(formData.readTime) };
 
-    formData.readTime = { value: parseInt(formData.readTime) };
+    if (file) {
+      try {
+        const uploadCover = await uploadFile(file);
+        console.log(uploadCover);
 
-    try {
-      const response = await fetch("http://localhost:5050/posts/create", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(formData),
-      });
-      return response;
-    } catch (error) {
-      console.log(e);
+        const finalBody = {
+          ...formData,
+          cover: uploadCover.cover,
+        };
+        const response = await fetch("http://localhost:5050/posts/create", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(finalBody),
+        });
+        return await response.json();
+      } catch (error) {
+        if (error) console.log(error);
+      }
     }
-
   };
 
-
-
-
-  
   return (
     <Container>
-      <Form className="mt-5" onSubmit={handleSubmit}>
+      
+      <Form
+        encType="multipart/form-data"
+        className="mt-5"
+        onSubmit={handleSubmit}
+      >
         <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Title</Form.Label>
           <Form.Control
@@ -61,6 +88,15 @@ const NewBlogPost = () => {
             onChange={handleInputChange}
             size="lg"
             placeholder="Author"
+          />
+        </Form.Group>
+        <Form.Group controlId="blog-form" className="mt-3">
+          <Form.Label>Cover image</Form.Label>
+          <Form.Control
+            name="cover"
+            onChange={onChangeSetFile}
+            size="lg"
+            type="file"
           />
         </Form.Group>
         <Form.Group controlId="blog-form" className="mt-3">

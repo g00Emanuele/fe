@@ -10,6 +10,7 @@ export default function MyBlog({
   author,
   cover,
   content,
+  handleModal
 }) {
   return (
     <Col className="col-3 g-3">
@@ -17,11 +18,13 @@ export default function MyBlog({
         <Card.Img variant="top" src={cover} height={200} />
         <Card.Body>
           <Card.Title>{title}</Card.Title>
-          <div dangerouslySetInnerHTML={{ __html: content }}/>
+          <Card.Text>{content}</Card.Text>
           <Card.Text>{category}</Card.Text>
           <Card.Text>{author}</Card.Text>
           <Card.Text>{readTime}</Card.Text>
-          <Button variant="primary">Go somewhere</Button>
+          <Button onClick={()=>handleModal} variant="primary">
+            Change cover image
+          </Button>
         </Card.Body>
       </Card>
     </Col>

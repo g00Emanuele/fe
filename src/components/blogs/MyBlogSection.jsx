@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MyBlog from "./MyBlog";
-import { Button, Container, Row, Col } from "react-bootstrap";
+import { Button, Container, Row, Col, Modal } from "react-bootstrap";
 import { nanoid } from "nanoid";
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/classic.css";
@@ -50,7 +50,7 @@ export default function MyBlogSection() {
                   title={post.title}
                   category={post.category}
                   content={post.content}
-                  cover="https://picsum.photos/200/300"
+                  cover={post.cover}
                   readTime={post.readTime.value + " " + post.readTime.unit}
                   author={post.author.name}
                 />

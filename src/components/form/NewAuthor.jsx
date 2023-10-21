@@ -5,6 +5,29 @@ import Form from "react-bootstrap/Form";
 
 function NewAuthor() {
   const [formData, setFormData] = useState({});
+  const [file, setFile] = useState(null);
+
+  const onChangeSetFile = (e) => {
+    setFile(e.target.files[0]); // il file si trova sempre a e.target.files[0]
+  };
+
+  const uploadFile = async (avatar) => {
+    const fileData = new FormData();
+    fileData.append("avatar", avatar);
+
+    try {
+      const response = await fetch(
+        "http://localhost:5050/authors/cloudUpload",
+        {
+          method: "POST",
+          body: fileData,
+        }
+      );
+      return await response.json();
+    } catch (error) {
+      console.log(error, "Errore in uploadFile");
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,14 +44,21 @@ function NewAuthor() {
     e.preventDefault();
 
     try {
+      const uploadAvatar = await uploadFile(file);
+      console.log(uploadAvatar);
+
+      const finalBody = {
+        ...formData,
+        avatar: uploadAvatar.avatar,
+      };
       const response = await fetch("http://localhost:5050/authors/create", {
         headers: {
           "Content-Type": "application/json",
         },
         method: "POST",
-        body: JSON.stringify(formData),
+        body: JSON.stringify(finalBody),
       });
-      return response;
+      return await response.json();
     } catch (error) {
       console.log(e);
     }
@@ -36,7 +66,11 @@ function NewAuthor() {
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit} className="mt-5">
+      <Form
+        encType="multipart/form-data"
+        onSubmit={handleSubmit}
+        className="mt-5"
+      >
         <Form.Group className="mb-3">
           <Form.Label>Name</Form.Label>
           <Form.Control onChange={handleInputChange} name="name" type="text" />
@@ -50,7 +84,15 @@ function NewAuthor() {
             type="text"
           />
         </Form.Group>
-
+        <Form.Group controlId="blog-form" className="mt-3">
+          <Form.Label>Avatar</Form.Label>
+          <Form.Control
+            name="avatar"
+            onChange={onChangeSetFile}
+            size="lg"
+            type="file"
+          />
+        </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
@@ -69,15 +111,6 @@ function NewAuthor() {
           <Form.Control
             onChange={handleInputChange}
             name="birthday"
-            type="text"
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Avatar</Form.Label>
-          <Form.Control
-            onChange={handleInputChange}
-            name="avatar"
             type="text"
           />
         </Form.Group>
