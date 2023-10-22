@@ -15,11 +15,11 @@ export default function MyBlogSection() {
   const [currentPage, setCurrentPage] = useState(1);
   const str = localStorage.getItem("loggedInUser");
   const token = str.substring(1, str.length - 1);
-  const newToken = jwtDecode(token)
+  const authorData = jwtDecode(token)
 
 
   const getPosts = async () => {
-    console.log(str, token, newToken)
+    console.log(str, token, authorData)
 
     try {
       setLoading(true);
