@@ -4,23 +4,35 @@ import { Button, Container, Row, Col, Modal } from "react-bootstrap";
 import { nanoid } from "nanoid";
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/classic.css";
-import axios from 'axios'
+import axios from "axios";
+import jwtDecode from 'jwt-decode'
+
 
 export default function MyBlogSection() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const str = localStorage.getItem("loggedInUser");
+  const token = str.substring(1, str.length - 1);
+  const newToken = jwtDecode(token)
+
 
   const getPosts = async () => {
+    console.log(str, token, newToken)
+
     try {
       setLoading(true);
-      const response = await axios.get(
-        `http://localhost:5050/posts?page=${currentPage}`
+      const response = await fetch(
+        `http://localhost:5050/posts?page=${currentPage}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
       );
       setPosts(response.data);
       setLoading(false);
-      console.log(response.data)
     } catch (error) {
       if (error) setError(error);
     }
