@@ -4,8 +4,8 @@ import { Button, Container, Row, Col, Modal } from "react-bootstrap";
 import { nanoid } from "nanoid";
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/classic.css";
-import axios from "axios";
 import jwtDecode from "jwt-decode";
+import axios from 'axios'
 
 export default function MyBlogSection() {
   const [error, setError] = useState(null);
@@ -15,6 +15,7 @@ export default function MyBlogSection() {
   const str = localStorage.getItem("loggedInUser");
   const token = str.substring(1, str.length - 1);
   const authorData = jwtDecode(token);
+  
 
   const getPosts = async () => {
     console.log(token, authorData);
