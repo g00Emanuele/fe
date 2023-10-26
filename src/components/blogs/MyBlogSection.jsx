@@ -6,7 +6,6 @@ import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/classic.css";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-require('dotenv').config()
 
 export default function MyBlogSection() {
   const [error, setError] = useState(null);
@@ -23,7 +22,7 @@ export default function MyBlogSection() {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_BASE_URL}/posts?page=${currentPage}`,
+        `http://localhost:5050/posts?page=${{ currentPage }}`,
         {
           headers: {
             Authorization: `${token}`,
@@ -32,7 +31,7 @@ export default function MyBlogSection() {
       );
       setPosts(response.data);
       setLoading(false);
-      console.log(posts)
+      console.log(posts);
     } catch (error) {
       if (error) setError(error);
     }
@@ -58,7 +57,7 @@ export default function MyBlogSection() {
             posts.posts?.map((post) => {
               return (
                 <>
-                  <MyBlog
+                  <MyBlog 
                     key={nanoid()}
                     title={post.title}
                     category={post.category}

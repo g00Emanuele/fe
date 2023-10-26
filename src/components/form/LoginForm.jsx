@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Col, Row, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-require('dotenv').config()
+
 
 const LoginForm = () => {
   const [loginData, setLoginData] = useState({});
@@ -19,14 +19,14 @@ const LoginForm = () => {
   };
 
   const redirectGithubLogin = () => {
-    window.location.href = `${process.env.REACT_APP_SERVER_BASE_URL}/auth/github`;
+    window.location.href = `http://localhost:5050/auth/github`;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/login`, {
+      const response = await fetch(`http://localhost:5050/login`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -81,7 +81,7 @@ const LoginForm = () => {
                 Sign up
               </Button>
               <Button
-                onClick={() => redirectGithubLogin()}
+                onClick={() => redirectGithubLogin}
                 variant="light bg-white"
                 type="button"
               >
