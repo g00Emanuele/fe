@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Col, Row, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+require('dotenv').config()
 
 const LoginForm = () => {
   const [loginData, setLoginData] = useState({});
@@ -25,7 +26,7 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5050/login", {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/login`, {
         headers: {
           "Content-Type": "application/json",
         },
