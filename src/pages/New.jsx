@@ -5,7 +5,6 @@ import MyNav from "../components/navbar/MyNav";
 export default function New() {
   return (
     <>
-      <MyNav />
       <NewBlogPost />
     </>
   );

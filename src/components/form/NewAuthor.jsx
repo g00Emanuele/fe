@@ -101,9 +101,15 @@ function NewAuthor() {
             type="email"
             placeholder="Enter email"
           />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            onChange={handleInputChange}
+            name="password"
+            type="password"
+            placeholder="Enter password"
+          />
         </Form.Group>
 
         <Form.Group className="mb-3">

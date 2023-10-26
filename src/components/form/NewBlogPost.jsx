@@ -1,11 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Container, Form, Modal } from "react-bootstrap";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 const NewBlogPost = () => {
   const [formData, setFormData] = useState({});
   const [file, setFile] = useState(null);
+  const [githubAcc, setGithubAcc] = useState(false);
   console.log(file);
+  const str = localStorage.getItem("loggedInUser");
+  const token = str.substring(1, str.length - 1);
+  const authorData = jwtDecode(token);
+  console.log(authorData.id);
 
   const onChangeSetFile = (e) => {
     setFile(e.target.files[0]); // il file si trova sempre a e.target.files[0]
@@ -40,16 +46,19 @@ const NewBlogPost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     formData.readTime = { value: Number(formData.readTime) };
+    const author = authorData.id;
 
     if (file) {
       try {
         const uploadCover = await uploadFile(file);
-        console.log(uploadCover);
 
         const finalBody = {
           ...formData,
           cover: uploadCover.cover,
+          author: authorData.id,
         };
+        console.log(finalBody);
+
         const response = await fetch("http://localhost:5050/posts/create", {
           headers: {
             "Content-Type": "application/json",
@@ -64,9 +73,16 @@ const NewBlogPost = () => {
     }
   };
 
+  // useEffect(()=>{
+  //   handleGithubAccount();
+  // }, [authorData])
+
   return (
     <Container>
-      
+      <h1>
+        Author: {authorData.name && authorData.name + " " + authorData.surname}
+        {!authorData.name && authorData.username}
+      </h1>
       <Form
         encType="multipart/form-data"
         className="mt-5"
@@ -79,15 +95,6 @@ const NewBlogPost = () => {
             onChange={handleInputChange}
             size="lg"
             placeholder="Title"
-          />
-        </Form.Group>
-        <Form.Group controlId="blog-form" className="mt-3">
-          <Form.Label>Author</Form.Label>
-          <Form.Control
-            name="author"
-            onChange={handleInputChange}
-            size="lg"
-            placeholder="Author"
           />
         </Form.Group>
         <Form.Group controlId="blog-form" className="mt-3">

@@ -5,8 +5,7 @@ import { nanoid } from "nanoid";
 import ResponsivePagination from "react-responsive-pagination";
 import "react-responsive-pagination/themes/classic.css";
 import axios from "axios";
-import jwtDecode from 'jwt-decode'
-
+import jwtDecode from "jwt-decode";
 
 export default function MyBlogSection() {
   const [error, setError] = useState(null);
@@ -15,15 +14,14 @@ export default function MyBlogSection() {
   const [currentPage, setCurrentPage] = useState(1);
   const str = localStorage.getItem("loggedInUser");
   const token = str.substring(1, str.length - 1);
-  const authorData = jwtDecode(token)
-
+  const authorData = jwtDecode(token);
 
   const getPosts = async () => {
-    console.log(str, token, authorData)
+    console.log(token, authorData);
 
     try {
       setLoading(true);
-      const response = await fetch(
+      const response = await axios.get(
         `http://localhost:5050/posts?page=${currentPage}`,
         {
           headers: {
@@ -33,6 +31,7 @@ export default function MyBlogSection() {
       );
       setPosts(response.data);
       setLoading(false);
+      console.log(posts)
     } catch (error) {
       if (error) setError(error);
     }
@@ -57,15 +56,17 @@ export default function MyBlogSection() {
             posts &&
             posts.posts?.map((post) => {
               return (
-                <MyBlog
-                  key={nanoid()}
-                  title={post.title}
-                  category={post.category}
-                  content={post.content}
-                  cover={post.cover}
-                  readTime={post.readTime.value + " " + post.readTime.unit}
-                  author={post.author.name}
-                />
+                <>
+                  <MyBlog
+                    key={nanoid()}
+                    title={post.title}
+                    category={post.category}
+                    content={post.content}
+                    cover={post.cover}
+                    readTime={post.readTime.value + " " + post.readTime.unit}
+                    author={post.author.name}
+                  />
+                </>
               );
             })}
         </Row>

@@ -10,7 +10,6 @@ export default function MyBlog({
   author,
   cover,
   content,
-  handleModal
 }) {
   return (
     <Col className="col-3 g-3">
@@ -22,9 +21,6 @@ export default function MyBlog({
           <Card.Text>{category}</Card.Text>
           <Card.Text>{author}</Card.Text>
           <Card.Text>{readTime}</Card.Text>
-          <Button onClick={()=>handleModal} variant="primary">
-            Change cover image
-          </Button>
         </Card.Body>
       </Card>
     </Col>
