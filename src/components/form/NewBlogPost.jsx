@@ -46,7 +46,6 @@ const NewBlogPost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     formData.readTime = { value: Number(formData.readTime) };
-    const author = authorData.id;
 
     if (file) {
       try {
@@ -72,10 +71,6 @@ const NewBlogPost = () => {
       }
     }
   };
-
-  // useEffect(()=>{
-  //   handleGithubAccount();
-  // }, [authorData])
 
   return (
     <Container>
