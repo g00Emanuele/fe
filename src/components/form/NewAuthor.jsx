@@ -17,7 +17,7 @@ function NewAuthor() {
 
     try {
       const response = await fetch(
-        "http://localhost:5050/authors/cloudUpload",
+        `${process.env.REACT_APP_SERVER_BASE_URL}/authors/cloudUpload`,
         {
           method: "POST",
           body: fileData,
@@ -51,7 +51,7 @@ function NewAuthor() {
         ...formData,
         avatar: uploadAvatar.avatar,
       };
-      const response = await fetch("http://localhost:5050/authors/create", {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/authors/create`, {
         headers: {
           "Content-Type": "application/json",
         },

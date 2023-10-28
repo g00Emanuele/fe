@@ -22,7 +22,7 @@ const NewBlogPost = () => {
     fileData.append("cover", cover);
 
     try {
-      const response = await fetch("http://localhost:5050/posts/cloudUpload", {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/cloudUpload`, {
         method: "POST",
         body: fileData,
       });
@@ -58,7 +58,7 @@ const NewBlogPost = () => {
         };
         console.log(finalBody);
 
-        const response = await fetch("http://localhost:5050/posts/create", {
+        const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/posts/create`, {
           headers: {
             "Content-Type": "application/json",
           },
